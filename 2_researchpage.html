@@ -755,8 +755,223 @@
 
 <!-- detect browser zoom -->
 
+<!-- Abstract Popup Modal Styles -->
+<style>
+.abstract-modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    z-index: 10000;
+    overflow-y: auto;
+}
+.abstract-modal-overlay.active {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 40px 20px;
+}
+.abstract-modal {
+    background-color: #ffffff;
+    max-width: 700px;
+    width: 100%;
+    padding: 30px 40px;
+    position: relative;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    margin: auto;
+}
+.abstract-modal-close {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    border: none;
+    background: none;
+    padding: 0;
+}
+.abstract-modal-close svg {
+    width: 100%;
+    height: 100%;
+}
+.abstract-modal-close:hover svg path {
+    fill: #666;
+}
+.abstract-modal-title {
+    font-family: 'Lucida Sans Unicode', 'Lucida Grande', sans-serif;
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 20px;
+    color: #000000;
+    line-height: 1.4;
+}
+.abstract-modal-heading {
+    font-family: 'Lucida Sans Unicode', 'Lucida Grande', sans-serif;
+    font-size: 19px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 15px;
+}
+.abstract-modal-text {
+    font-family: 'Lucida Sans Unicode', 'Lucida Grande', sans-serif;
+    font-size: 18px;
+    text-align: justify;
+    line-height: 1.5;
+    color: #000000;
+}
+</style>
 
+<!-- Abstract Popup Modal HTML -->
+<div class="abstract-modal-overlay" id="abstractModalOverlay">
+    <div class="abstract-modal">
+        <button class="abstract-modal-close" id="abstractModalClose" title="Back to site" aria-label="Back to site">
+            <svg preserveAspectRatio="xMidYMid meet" viewBox="25.975 25.975 148.05 148.05" xmlns="http://www.w3.org/2000/svg" role="presentation" aria-hidden="true">
+                <g>
+                    <path d="M172.9 167.6L105.3 100l67.6-67.6c1.5-1.5 1.5-3.8 0-5.3s-3.8-1.5-5.3 0L100 94.7 32.4 27.1c-1.5-1.5-3.8-1.5-5.3 0s-1.5 3.8 0 5.3L94.7 100l-67.6 67.6c-1.5 1.5-1.5 3.8 0 5.3s3.8 1.5 5.3 0l67.6-67.6 67.6 67.6c1.5 1.5 3.8 1.5 5.3 0s1.5-3.8 0-5.3z"></path>
+                </g>
+            </svg>
+        </button>
+        <div class="abstract-modal-title" id="abstractModalTitle"></div>
+        <p class="abstract-modal-heading">Abstract</p>
+        <p class="abstract-modal-text" id="abstractModalText"></p>
+    </div>
+</div>
 
+<!-- Abstract Popup JavaScript -->
+<script>
+(function() {
+    // Abstract data - mapping popup IDs to paper info
+    const abstracts = {
+        "m8q1p": {
+            title: "Partisan Politics, Inter-jurisdictional Cooperation, and Law Enforcement: Evidence from Mexico",
+            abstract: "We study how partisan politics affect inter-jurisdictional cooperation and public good provision in federal systems. We focus on law enforcement in Mexico, a country marked by high violent crime and strong partisan cleavages. Using a Regression Discontinuity Design in close municipal elections, we show that municipalities where the party in power in most neighbors barely won are more likely to cooperate with their neighbors on law enforcement than those where it barely lost, especially during periods of widespread violence. Such cooperation, in turn, improves crime prevention and significantly reduces homicide rates, with effects increasing the more neighbors are governed by the same party. These results hold regardless of party identity, incumbency, or cooperation with federal or state authorities. Overall, our findings indicate that while horizontal cooperation can improve local public goods in the presence of geographical spillovers, partisan divisions may hinder this process."
+        },
+        "m8q2f": {
+            title: "Calamities, Common Interests, Shared Identity: What Shapes Social Cohesion in Europe?",
+            abstract: "We conduct a large-scale incentivized survey experiment in nine EU countries to study how priming common economic interests (EU trade), a shared identity (EU common values), and a major health crisis (COVID-19), influences altruism, reciprocity and trust of EU citizens. We find that the COVID-19 treatment increases altruism and reciprocity towards compatriots, as well as altruism towards citizens of other EU countries. The EU common values treatment has similar effects and in addition also boosts reciprocity towards fellow Europeans. The EU trade treatment has no tangible impact on behavior. Trust in others is not affected by any treatment. Our results suggest that both a shared identity and a shared crisis can have a unifying effect among EU citizens, while shared economic interests (alone) do not significantly affect European cohesion."
+        },
+        "m8q2r": {
+            title: "Lost in the Net? Broadband Internet and Youth Mental Health",
+            abstract: "How does the internet affect young people's mental health? We study this question in the context of Italy using administrative data on the universe of cases of mental disorders diagnosed in Italian hospitals between 2001 and 2013, which we combine with information on the availability of high-speed internet at the municipal level. Our identification strategy exploits differences in the proximity of municipalities to the pre-existing voice telecommunication infrastructure, which was previously irrelevant but became salient after the advent of the internet. We find that access to high-speed internet has a significant positive effect on the incidence of mental disorders for young cohorts but not for older ones. In particular, internet access leads to an increase in diagnoses of depression, anxiety, drug abuse, and personality disorders - for both males and females - and of eating and sleep disorders - for females only. We find similar results for urgent and compulsory hospitalizations and self-harm episodes. These results suggest that the effect of broadband is driven by a rise in the underlying prevalence of mental disorders and not merely by increased awareness about these pathologies."
+        },
+        "m8q2p": {
+            title: "Unpacking Social Capital",
+            abstract: "We use novel survey data from Italy to shed light on key questions regarding the measurement of social capital and the use of social capital indicators for empirical work. Our data cover a sample of over 600,000 respondents interviewed between 2000 and 2015. We identify four distinct components of social capital - (i) social participation, (ii) political participation, (iii) general trust, and (iv) trust in institutions - and examine how they relate to each other. We then study how each dimension of social capital relates to various socioeconomic factors both at the individual and the aggregate level, and to various proxies of social capital commonly used in the literature. Finally, building on previous work, we investigate to what extent different dimensions of social capital predict differences in key economic, political, and health outcomes. Our findings support the view that social capital is a multifaceted object with multiple dimensions that, while related, are distinct from each other. Future work should take such multi-dimensionality into account and carefully consider what measure of social capital to use."
+        },
+        "m8q2d": {
+            title: "The Impact of Online Competition on Newspapers: Evidence from the Introduction of Craigslist",
+            abstract: "How does competition from online platforms affect the organization, performance, and editorial choices of newspapers? And what are the implications of these changes for the information voters are exposed to and for political accountability? We study these questions using the staggered introduction of Craigslist - the world's largest online platform for classified advertising - across US counties between 1995 and 2009. This setting allows us to separate the effect of competition for classified advertising from other changes brought about by the Internet, and to compare newspapers that relied more or less heavily on classified ads ex ante. We find that, following the entry of Craigslist, local papers experienced a significant decline in the number of newsroom and management staff. Cuts in editorial staff disproportionately affected reporters covering politics. These organizational changes led to a reduction in news coverage of politics and political corruption, and resulted in a decline in newspaper readership which was not compensated by increased news consumption on other media. Finally, we find some evidence that reduced news coverage of politics was associated with lower voter turnout, and more party-line voting for both citizens and politicians."
+        },
+        "m8q22": {
+            title: "The Virus of Fear: The Political Impact of Ebola in the U.S.",
+            abstract: "We study how fear can affect the behavior of voters and politicians by looking at the Ebola scare that hit the U.S. a month before the 2014 midterm elections. Exploiting the timing and location of the four cases diagnosed in the U.S., we show that heightened concern about Ebola, as measured by online activity, led to a lower vote share for the Democrats in congressional and gubernatorial elections, as well as lower turnout, despite no evidence of a general anti-incumbent effect (including on President Obama's approval ratings). We then show that politicians responded to the Ebola scare by mentioning the disease in connection with immigration and terrorism in newsletters and campaign ads. This response came only from Republicans, especially those facing competitive races, suggesting a strategic use of the issue in conjunction with topics perceived as favorable to them. Survey evidence suggests that voters responded with increasingly conservative attitudes on immigration but not on other ideologically-charged issues. Taken together, our findings indicate that emotional reactions associated with fear can have a strong electoral impact, that politicians perceive and act strategically in response to this, and that the process is mediated by issues that can be plausibly associated with the specific fear-triggering factor."
+        },
+        "m8q26": {
+            title: "Salience and Accountability: School Infrastructure and Last-Minute Electoral Punishment",
+            abstract: "Can seemingly unimportant factors influence voting decisions by making certain issues salient? We study this question in the context of Argentina's 2015 presidential elections by examining how the quality of the infrastructure of the school where citizens were assigned to vote influenced their voting choice. Exploiting the quasi-random assignment of voters to ballot stations located in different public schools in the City of Buenos Aires, we find that individuals assigned to schools with poorer infrastructure were significantly less likely to vote for Mauricio Macri, the incumbent mayor then running for president. The effect is larger in low-income areas - where fewer people can afford private substitutes to public education - and in places where more households have children in school age. The effect is unlikely to be driven by information provision, since information on public school infrastructure was readily available to parents before elections. An alternative interpretation is that direct exposure to poor school infrastructure at the time of voting makes public education - and the poor performance of the incumbent - more salient."
+        },
+        "m8q2l": {
+            title: "Media and Social Capital",
+            abstract: "We survey the empirical literature in economics on the impact of media technologies on social capital. Motivated by a simple model of information and collective action, we cover a range of different outcomes related to social capital, from social and political participation to interpersonal trust, in its benign and destructive manifestations. The impact of media technologies hinges on their content (\"information\" vs \"entertainment\"), their effectiveness in fostering coordination, and the networks they create, as well as individual characteristics and media consumption choices."
+        },
+        "m8q20": {
+            title: "Media Attention and Strategic Timing in Politics: Evidence from U.S. Presidential Executive Orders",
+            abstract: "Do politicians tend to adopt unpopular policies when the media and the public are distracted by other events? We examine this question by analyzing the timing of executive orders signed by U.S. presidents over the past four decades. We find robust evidence that executive orders are more likely to be signed on the eve of days when the news is dominated by other important stories that can crowd out coverage of executive orders. This relationship only holds in periods of divided government when unilateral presidential actions are more likely to be criticized by Congress. The effect is driven by executive orders that are more likely to make the news and to attract negative publicity, particularly those on topics on which president and Congress disagree. Finally, the timing of executive orders appears to be related to predictable news but not unpredictable ones, which suggests it results from a deliberate and forward-looking PR strategy."
+        },
+        "m8q2j": {
+            title: "Tracking the Impact of COVID-19 on Economic Inequality at High Frequency",
+            abstract: "Pandemics have historically had a significant impact on economic inequality. However, official inequality statistics are only available at low frequency and with considerable delay, which challenges policymakers in their objective to mitigate inequality and fine-tune public policies. We show that using data from bank records it is possible to measure economic inequality at high frequency. The approach proposed in this paper allows measuring, timely and accurately, the impact on inequality of fast-unfolding crises, like the COVID-19 pandemic. Applying this approach to data from a representative sample of over three million residents of Spain we find that, absent government intervention, inequality would have increased by almost 30% in just one month. The granularity of the data allows analyzing with great detail the sources of the increases in inequality. In the Spanish case we find that it is primarily driven by job losses and wage cuts experienced by low-wage earners. Government support, in particular extended unemployment insurance and benefits for furloughed workers, were generally effective at mitigating the increase in inequality, though less so among young people and foreign-born workers. Therefore, our approach provides knowledge on the evolution of inequality at high frequency, the effectiveness of public policies in mitigating the increase of inequality and the subgroups of the population most affected by the changes in inequality. This information is fundamental to fine-tune public policies on the wake of a fast-moving pandemic like the COVID-19."
+        },
+        "m8q24": {
+            title: "Asocial Capital: Civic Culture and Social Distancing during COVID-19",
+            abstract: "Social distancing can slow the spread of COVID-19 if citizens comply with it and internalize the cost of their mobility on others. We study how civic values mediate this process using data on mobility across Italian provinces between January and May 2020. We find that after the virus outbreak mobility declined, but significantly more in areas with higher civic capital, both before and after a mandatory national lockdown. The effect is not driven by differences in the risk of contagion, health-care capacity, geographic socioeconomic and demographic factors, or by a general North-South divide. Simulating a SIR model calibrated on Italy, we estimate that if all provinces had the same civic capital as those in top-quartile, COVID-related deaths would have been ten times lower. We find consistent results for Germany where the incidence of the pandemic and restrictions to mobility were milder."
+        },
+        "m8q1w": {
+            title: "Advertising Spending and Media Bias: Evidence from News Coverage of Car Safety Recalls",
+            abstract: "Do mass media bias content in favor of advertisers? If so, what market conditions limit or exacerbate this bias? We examine the relationship between advertising by auto manufacturers in U.S. newspapers and news coverage of car safety recalls between 2000 and 2014. This context allows us to separate the influence of advertisers, who prefer less coverage, from that of readers, who prefer more information about the safety risks associated with the recalls. Consistent with theoretical predictions, we find that newspapers provide less coverage of recalls issued by manufacturers that advertised more and more regularly on their pages over the previous two years. The effect is especially pronounced for more severe recalls, which are more likely to hurt manufacturers' reputation. Competition for readers from other newspapers mitigates pro-advertiser bias, while competition for advertising by online platforms exacerbates it. We also present suggestive evidence that less news coverage of recalls is associated with more fatal car accidents."
+        },
+        "m8q1j": {
+            title: "The Political Legacy of Entertainment TV",
+            abstract: "We study the political impact of commercial television in Italy exploiting the staggered introduction of Berlusconi's private TV network, Mediaset, in the early 1980s. We find that individuals with early access to Mediaset all-entertainment content were more likely to vote for Berlusconi's party in 1994, when he first ran for office. The effect persists for five elections and is driven by heavy TV viewers, namely the very young and the elderly. Regarding possible mechanisms, we find that individuals exposed to entertainment TV as children were less cognitively sophisticated and civic-minded as adults, and ultimately more vulnerable to Berlusconi's populist rhetoric."
+        },
+        "m8q1b": {
+            title: "Market-Based Lobbying: Evidence from Advertising Spending in Italy",
+            abstract: "We analyze a novel lobbying channel: firms attempting to influence businessmen-politicians through business proxies. In particular, when a politician controls a business, firms shift their spending towards the politician's business in the hopes of securing favorable regulation. We investigate this channel in Italy where government officials are not required to divest business holdings. We examine the evolution of advertising spending by firms between 1993 and 2009, a period in which Silvio Berlusconi was prime minister three separate times, while maintaining control of Italy's major private television network, Mediaset. We develop a theoretical model of this channel and, in the context of this model, hypothesize that firms shift their advertising budget towards Mediaset when Berlusconi is in power and that this shift is particularly pronounced for regulated firms. Consistent with these hypotheses, we document a significant pro-Mediaset bias in the allocation of advertising spending during Berlusconi's political tenure, and this pattern is especially pronounced for companies operating in more regulated sectors. Using these estimates, we estimate that Mediaset profits increased by one billion euros during this period and that regulated firms anticipated sizeable returns, stressing the economic importance of this lobbying channel. These findings provide an additional rationale for rules on conflict of interest."
+        },
+        "m8q1d": {
+            title: "Poor Institutions, Rich Mines: Resource Curse in the Origins of the Sicilian Mafia",
+            abstract: "With weak law-enforcement institutions, a positive shock to the value of natural resources may increase demand for private protection and opportunities for rent appropriation through extortion, favouring the emergence of mafia-type organisations. We test this hypothesis by investigating the emergence of the mafia in twentieth century Sicily, where a severe lack of state property-rights enforcement coincided with a steep rise in international demand for sulphur, Sicily's most valuable export commodity. Using historical data on the early incidence of mafia activity and on the distribution of sulphur reserves, we document that the mafia was more present in municipalities with greater sulphur availability."
+        },
+        "m8q1h": {
+            title: "Partisan Control, Media Bias and Viewer Responses: Evidence from Berlusconi's Italy",
+            abstract: "This paper examines whether and how viewers respond to changes in partisan bias in media news. We use data from Italy, where the main private television network is owned by Silvio Berlusconi, the leader of the center-right coalition, and the public television corporation is largely controlled by the ruling coalition. We first document that after the 2001 national elections, when the control of the government moved from the center-left to the center-right, news content on public television shifted to the right. Using individual survey data, we find robust evidence that viewers responded to these changes by modifying their choice of favorite news programs. On the one hand, right-leaning viewers increased their propensity to watch public channels which, even after the change, remained to the left of private channels. On the other hand, left-wing viewers reacted by switching from the main public channel to another public channel that was controlled by the left during both periods. We show that this behavioral response, which tended to shift ideological exposure to the left, significantly, though only partially, offset the movement of public news content to the right."
+        },
+        "ed6z1": {
+            title: "GenAI Misinformation, Trust, and News Consumption: Evidence from a Field Experiment",
+            abstract: "We study how AI-generated misinformation affects demand for trustworthy news, using data from a field experiment by a major German outlet, Süddeutsche Zeitung (SZ). Readers were randomly assigned to a treatment highlighting the challenge of distinguishing real from AI-generated images. The treatment raised concern with misinformation (0.3 s.d.) and reduced trust in news (0.1 s.d.), including SZ. Importantly, it affected post-survey browsing behavior: daily visits to SZ digital content rose by 2.5% in the immediate aftermath of the treatment. Moreover, we find that subscriber retention increased by 1.1% after five months, corresponding to about a one-third drop in attrition rate. Results are consistent with a model where the relative value of trustworthy news sources increases with the prevalence of misinformation, which may thus boost engagement with those sources even while lowering trust in news content."
+        },
+        "m8q2n": {
+            title: "Visual Representation and Stereotypes in News Media",
+            abstract: "This paper presents a new method to measure gender and ethnic stereotypes in news reports, using computer vision tools to assess the gender, race, and ethnicity of individuals depicted in article images. We validate the method and apply it to 700,000 web articles published in the New York Times and Fox News between 2000 and 2020. Males and whites are over-represented relative to their population share, while women and Hispanics are underrepresented. Using data on authorship and editorship, we show that group representation in the news is influenced by the identity of news producers. Relating images to text content, we find that images of Black faces are associated with more negative sentiment in the associated article text, with a stronger negative association for Fox News compared to the New York Times. Further, news images perpetuate common stereotypes, such as associating Blacks and Hispanics with low-skill jobs, crime, and poverty, and Asians with high-skill jobs and science. Analyzing news coverage of specific jobs, we show that racial stereotypes hold even after controlling for the actual share of a group in a given occupation."
+        },
+        "m8q28": {
+            title: "Media Capture by Banks",
+            abstract: "Do media slant news in favor of the banks they borrow from? We study how lending connections affect news coverage of banks' earnings reports and of the Eurozone sovereign debt crisis on major European newspapers. We find that newspapers cover announcements by their lenders - relative to those of other banks - significantly more when they report profits than when they report losses. Such pro-lender bias is stronger for more leveraged outlets, and tends to operate on the extensive margin for general-interest newspapers and on the intensive margin for financial newspapers. Regarding the Eurozone crisis we find that newspapers connected to banks more exposed to stressed sovereign bonds are more likely to promote a narrative of the crisis favorable to banks and to oppose debt-restructuring measures detrimental to creditors. Our findings support the concern that financial distress and increased dependence on creditors may undermine media companies' editorial independence."
+        }
+    };
+
+    const overlay = document.getElementById('abstractModalOverlay');
+    const closeBtn = document.getElementById('abstractModalClose');
+    const titleEl = document.getElementById('abstractModalTitle');
+    const textEl = document.getElementById('abstractModalText');
+
+    function openModal(popupId) {
+        const data = abstracts[popupId];
+        if (data) {
+            titleEl.textContent = data.title;
+            textEl.textContent = data.abstract;
+            overlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+    }
+
+    function closeModal() {
+        overlay.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+
+    // Close button click
+    closeBtn.addEventListener('click', closeModal);
+
+    // Click outside modal to close
+    overlay.addEventListener('click', function(e) {
+        if (e.target === overlay) {
+            closeModal();
+        }
+    });
+
+    // Escape key to close
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            closeModal();
+        }
+    });
+
+    // Attach click handlers to all abstract links with data-popupid
+    document.querySelectorAll('[data-popupid]').forEach(function(link) {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            const popupId = this.getAttribute('data-popupid');
+            openModal(popupId);
+        });
+    });
+})();
+</script>
 
 
 
